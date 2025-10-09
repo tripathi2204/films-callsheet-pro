@@ -1,6 +1,7 @@
 import { Radio, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import AutocompleteInput from "@/components/ui/autocomplete-input";
 
 interface RadioChannel {
   id: string;
@@ -12,6 +13,13 @@ interface Props {
   channels: RadioChannel[];
   updateChannels: (channels: RadioChannel[]) => void;
 }
+
+const DEPARTMENTS = [
+  "Art", "Camera", "Craft Services", "Direction", "Electric", "Grip",
+  "Hair & Makeup", "Health & Safety", "Location", "Production", "Props",
+  "Set Dressing", "Sound", "Special Effects", "Stunts", "Transportation",
+  "Visual Effects", "Wardrobe"
+];
 
 const RadioChannelsSection = ({ channels, updateChannels }: Props) => {
   const addChannel = () => {
@@ -61,10 +69,11 @@ const RadioChannelsSection = ({ channels, updateChannels }: Props) => {
                 onChange={(e) => updateItem(item.id, 'number', e.target.value)}
                 className="w-12 h-8 text-xs"
               />
-              <Input
+              <AutocompleteInput
                 placeholder="Department"
                 value={item.department}
-                onChange={(e) => updateItem(item.id, 'department', e.target.value)}
+                onChange={(v) => updateItem(item.id, 'department', v)}
+                options={DEPARTMENTS}
                 className="flex-1 h-8 text-xs"
               />
               <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => removeItem(item.id)}>

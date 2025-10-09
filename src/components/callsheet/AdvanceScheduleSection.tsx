@@ -1,7 +1,9 @@
-import { CalendarDays, Plus, X, GripVertical } from "lucide-react";
+import { CalendarDays, Plus, X, ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import TimeInput from "@/components/ui/time-input";
+import PagesInput from "@/components/ui/pages-input";
 
 interface AdvanceScheduleItem {
   id: string;
@@ -26,7 +28,7 @@ const AdvanceScheduleSection = ({ schedule, updateSchedule }: Props) => {
       time: '',
       sceneNo: '',
       description: '',
-      dn: 'D',
+      dn: 'Day',
       cast: '',
       location: '',
       pages: ''
@@ -125,8 +127,10 @@ const AdvanceScheduleSection = ({ schedule, updateSchedule }: Props) => {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="D">D</SelectItem>
-                  <SelectItem value="N">N</SelectItem>
+                  <SelectItem value="Day">Day</SelectItem>
+                  <SelectItem value="Night">Night</SelectItem>
+                  <SelectItem value="Morning">Morning</SelectItem>
+                  <SelectItem value="Evening">Evening</SelectItem>
                 </SelectContent>
               </Select>
               <Input

@@ -27,6 +27,11 @@ export interface CallSheetData {
     name: string;
     time: string;
   }>;
+  maxTemp?: string;
+  minTemp?: string;
+  tempUnit?: string;
+  sunrise?: string;
+  sunset?: string;
   schedule: Array<any>;
   talent: Array<any>;
   locations: Array<any>;
@@ -39,18 +44,22 @@ const CallSheetGenerator = () => {
   const [callSheetData, setCallSheetData] = useState<CallSheetData>({
     movieName: "YOUR MOVIE NAME",
     shootDay: "1",
-    generalCrewCall: "8:00",
+    generalCrewCall: "8:00 AM",
     productionNotes: "",
     productionLogo: "",
     productionAddress: "",
     crewContacts: [
-      { position: "Producer", name: "John Smith", phone: "(555) 555-5555" },
-      { position: "Director", name: "John Smith", phone: "(555) 555-5555" }
+      { position: "Producer", name: "John Smith", phone: "(555) 555-5555" }
     ],
     shootDate: new Date().toISOString().split('T')[0],
     callTimes: [
-      { name: "Crew Call", time: "8:00 am" }
+      { name: "Crew Call", time: "8:00 AM" }
     ],
+    maxTemp: "",
+    minTemp: "",
+    tempUnit: "F",
+    sunrise: "",
+    sunset: "",
     schedule: [],
     talent: [],
     locations: [],
@@ -102,26 +111,6 @@ const CallSheetGenerator = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
-      {/* Action Buttons */}
-      <div className="mb-8 flex flex-wrap gap-4 justify-end print:hidden">
-        <Button onClick={handleSave} variant="outline" className="gap-2">
-          <Save className="h-4 w-4" />
-          Save
-        </Button>
-        <Button onClick={handleExportPDF} variant="default" className="gap-2">
-          <FileDown className="h-4 w-4" />
-          Export PDF
-        </Button>
-        <Button onClick={handleEmail} variant="default" className="gap-2">
-          <Mail className="h-4 w-4" />
-          Email
-        </Button>
-        <Button onClick={handleGenerateLink} variant="default" className="gap-2">
-          <Link2 className="h-4 w-4" />
-          Generate Link
-        </Button>
-      </div>
-
       {/* Call Sheet */}
       <div className="bg-[hsl(var(--sheet-bg))] border-2 border-[hsl(var(--sheet-border))] rounded-lg p-6 md:p-8 shadow-lg">
         <CallSheetHeader 
@@ -133,6 +122,8 @@ const CallSheetGenerator = () => {
           <ScheduleSection 
             schedule={callSheetData.schedule}
             updateSchedule={(schedule) => updateCallSheetData('schedule', schedule)}
+            talent={callSheetData.talent}
+            locations={callSheetData.locations}
           />
 
           <TalentSection 
@@ -160,6 +151,18 @@ const CallSheetGenerator = () => {
             updateChannels={(channels) => updateCallSheetData('radioChannels', channels)}
           />
         </div>
+      </div>
+
+      {/* Action Buttons at Bottom */}
+      <div className="mt-8 flex flex-wrap gap-4 justify-center print:hidden">
+        <Button onClick={handleExportPDF} variant="default" className="gap-2">
+          <FileDown className="h-4 w-4" />
+          Export PDF
+        </Button>
+        <Button onClick={handleEmail} variant="default" className="gap-2">
+          <Mail className="h-4 w-4" />
+          Email
+        </Button>
       </div>
     </div>
   );

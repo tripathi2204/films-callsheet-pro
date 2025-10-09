@@ -17,13 +17,16 @@ const Hero = () => {
         </p>
         <div className="prose prose-lg mx-auto text-left mb-10 text-foreground/90">
           <p>
-            Welcome to the original Call Sheet Generator, designed for filmmakers, producers, and ADs who need to move fast. Our intuitive tool lets you instantly create beautiful, production-ready Call Sheets right from your browser.
+            Welcome to TheCallSheetApp.com — built for filmmakers, producers, and ADs who need to move fast.
           </p>
           <p>
-            Customize every detail and download your Call Sheet as a PDF or share it instantly with your team.
+            Whether you're wrapping up a long day on set or planning the next one, our no-nonsense platform lets you quickly create professional, production-ready Call Sheets — one day at a time — right from your browser.
+          </p>
+          <p>
+            Customize every detail, download your Call Sheet as a PDF, or share it instantly with your team.
           </p>
           <p className="font-semibold">
-            Did we mention? You can generate unlimited Call Sheets for all your projects — completely free!
+            And the best part? You can generate unlimited Call Sheets for all your projects — completely free!
           </p>
         </div>
         <Button 

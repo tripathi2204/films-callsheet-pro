@@ -2,6 +2,7 @@ import { Users, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import TimeInput from "@/components/ui/time-input";
 
 interface TalentItem {
   id: string;
@@ -39,7 +40,7 @@ const TalentSection = ({ talent, updateTalent }: Props) => {
       makeup: '',
       callTime: '',
       contact: '',
-      swf: 'SW'
+      swf: 'W'
     };
     updateTalent([...talent, newTalent]);
   };
@@ -106,20 +107,12 @@ const TalentSection = ({ talent, updateTalent }: Props) => {
                 onChange={(e) => updateItem(item.id, 'role', e.target.value)}
                 className="col-span-2 h-8 text-xs"
               />
-              <Input
-                type="time"
-                placeholder="Makeup"
-                value={item.makeup}
-                onChange={(e) => updateItem(item.id, 'makeup', e.target.value)}
-                className="col-span-2 h-8 text-xs"
-              />
-              <Input
-                type="time"
-                placeholder="Call Time"
-                value={item.callTime}
-                onChange={(e) => updateItem(item.id, 'callTime', e.target.value)}
-                className="col-span-2 h-8 text-xs"
-              />
+              <div className="col-span-2">
+                <TimeInput value={item.makeup} onChange={(v) => updateItem(item.id, 'makeup', v)} />
+              </div>
+              <div className="col-span-2">
+                <TimeInput value={item.callTime} onChange={(v) => updateItem(item.id, 'callTime', v)} />
+              </div>
               <Input
                 placeholder="Contact"
                 value={item.contact}

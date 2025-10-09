@@ -12,11 +12,14 @@ const Header = ({ darkMode, toggleDarkMode }: HeaderProps) => {
   return (
     <header className="border-b border-border bg-card sticky top-0 z-50">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-          <img src={logo} alt="TheCallSheetApp.com" className="h-10 w-10" />
-          <span className="font-bold text-lg bg-gradient-to-r from-[hsl(var(--brand-blue))] via-[hsl(var(--brand-purple))] to-[hsl(var(--brand-pink))] bg-clip-text text-transparent">
-            TheCallSheetApp.com
-          </span>
+        <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity group">
+          <img src={logo} alt="TheCallSheetApp.com" className="h-12" />
+          <div className="flex flex-col items-start">
+            <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500 bg-clip-text text-transparent">
+              thecallsheetApp.com
+            </span>
+            <div className="h-0.5 w-full bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500 rounded-full mt-0.5"></div>
+          </div>
         </Link>
 
         <nav className="flex items-center gap-4">
@@ -25,9 +28,11 @@ const Header = ({ darkMode, toggleDarkMode }: HeaderProps) => {
               Call Sheet Guide
             </Button>
           </Link>
-          <Button variant="ghost" size="sm" disabled>
-            Blog
-          </Button>
+          <a href="https://thecallsheetapp.com/blog/" target="_blank" rel="noopener noreferrer">
+            <Button variant="ghost" size="sm">
+              Blog
+            </Button>
+          </a>
           <Button
             variant="ghost"
             size="icon"

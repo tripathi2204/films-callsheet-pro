@@ -1,7 +1,7 @@
 import { FileText, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import AutocompleteInput from "@/components/ui/autocomplete-input";
 
 interface DepartmentNote {
   id: string;
@@ -13,6 +13,27 @@ interface Props {
   notes: DepartmentNote[];
   updateNotes: (notes: DepartmentNote[]) => void;
 }
+
+const DEPARTMENTS = [
+  "Art",
+  "Camera",
+  "Craft Services",
+  "Direction",
+  "Electric",
+  "Grip",
+  "Hair & Makeup",
+  "Health & Safety",
+  "Location",
+  "Production",
+  "Props",
+  "Set Dressing",
+  "Sound",
+  "Special Effects",
+  "Stunts",
+  "Transportation",
+  "Visual Effects",
+  "Wardrobe"
+];
 
 const DepartmentNotesSection = ({ notes, updateNotes }: Props) => {
   const addNote = () => {
@@ -56,12 +77,15 @@ const DepartmentNotesSection = ({ notes, updateNotes }: Props) => {
         <div className="space-y-3">
           {notes.map(item => (
             <div key={item.id} className="grid grid-cols-12 gap-2 items-start">
-              <Input
-                placeholder="Department"
-                value={item.department}
-                onChange={(e) => updateItem(item.id, 'department', e.target.value)}
-                className="col-span-3 h-8 text-xs"
-              />
+              <div className="col-span-3">
+                <AutocompleteInput
+                  value={item.department}
+                  onChange={(v) => updateItem(item.id, 'department', v)}
+                  options={DEPARTMENTS}
+                  placeholder="Department"
+                  className="h-8 text-xs"
+                />
+              </div>
               <Textarea
                 placeholder="Notes..."
                 value={item.notes}

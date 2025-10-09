@@ -1,7 +1,10 @@
-import { Calendar, Plus, X, GripVertical, Flag, Truck } from "lucide-react";
+import { Calendar, Plus, X, Flag, Truck, ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import TimeInput from "@/components/ui/time-input";
+import PagesInput from "@/components/ui/pages-input";
+import AutocompleteInput from "@/components/ui/autocomplete-input";
 
 interface ScheduleItem {
   id: string;
@@ -19,9 +22,13 @@ interface ScheduleItem {
 interface Props {
   schedule: ScheduleItem[];
   updateSchedule: (schedule: ScheduleItem[]) => void;
+  talent?: Array<{ name: string; role: string }>;
+  locations?: Array<{ number: string; setLocation: string }>;
 }
 
-const ScheduleSection = ({ schedule, updateSchedule }: Props) => {
+const ScheduleSection = ({ schedule, updateSchedule, talent = [], locations = [] }: Props) => {
+  const castOptions = talent.map(t => `${t.name} - ${t.role}`).filter(Boolean);
+  const locationOptions = locations.map(l => `${l.number}: ${l.setLocation}`).filter(Boolean);
   const addItem = (type: 'scene' | 'banner' | 'company-move') => {
     const newItem: ScheduleItem = {
       id: Date.now().toString(),
@@ -30,7 +37,7 @@ const ScheduleSection = ({ schedule, updateSchedule }: Props) => {
         time: '',
         sceneNo: '',
         description: '',
-        dn: 'D',
+        dn: 'Day',
         cast: '',
         location: '',
         pages: ''
