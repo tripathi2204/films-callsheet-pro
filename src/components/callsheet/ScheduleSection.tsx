@@ -1,4 +1,4 @@
-import { Calendar, Plus, X, Flag, Truck, ChevronUp, ChevronDown } from "lucide-react";
+import { Calendar, Plus, X, Flag, Truck, ChevronUp, ChevronDown, GripVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
