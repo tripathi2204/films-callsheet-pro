@@ -1,4 +1,5 @@
-import { CalendarDays, Plus, X, ChevronUp, ChevronDown, GripVertical } from "lucide-react";
+import { CalendarDays, Plus, X, ChevronUp, ChevronDown } from "lucide-react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -97,17 +98,14 @@ const AdvanceScheduleSection = ({ schedule, updateSchedule }: Props) => {
           {schedule.map(item => (
             <div key={item.id} className="grid grid-cols-12 gap-2 items-center">
               <div className="col-span-1 flex items-center gap-1">
-                <GripVertical className="h-4 w-4 text-[hsl(var(--label-text))]" />
                 <div className="flex flex-col">
                   <Button size="sm" variant="ghost" className="h-4 p-0" onClick={() => moveItem(item.id, 'up')}>↑</Button>
                   <Button size="sm" variant="ghost" className="h-4 p-0" onClick={() => moveItem(item.id, 'down')}>↓</Button>
                 </div>
               </div>
-              <Input
-                type="time"
-                placeholder="Time"
+              <TimeInput
                 value={item.time}
-                onChange={(e) => updateItem(item.id, 'time', e.target.value)}
+                onChange={(v) => updateItem(item.id, 'time', v)}
                 className="col-span-1 h-8 text-xs"
               />
               <Input
@@ -146,12 +144,9 @@ const AdvanceScheduleSection = ({ schedule, updateSchedule }: Props) => {
                 className="col-span-2 h-8 text-xs"
               />
               <div className="col-span-1 flex gap-1">
-                <Input
-                  placeholder="Pages"
-                  type="number"
-                  step="0.125"
+                <PagesInput
                   value={item.pages}
-                  onChange={(e) => updateItem(item.id, 'pages', e.target.value)}
+                  onChange={(v) => updateItem(item.id, 'pages', v)}
                   className="h-8 text-xs w-16"
                 />
                 <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => removeItem(item.id)}>

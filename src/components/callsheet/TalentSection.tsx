@@ -1,4 +1,5 @@
 import { Users, Plus, X } from "lucide-react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -31,6 +32,13 @@ const swfOptions = [
 ];
 
 const TalentSection = ({ talent, updateTalent }: Props) => {
+  // Add default empty talent if none exist
+  React.useEffect(() => {
+    if (talent.length === 0) {
+      addTalent();
+    }
+  }, []);
+
   const addTalent = () => {
     const newTalent: TalentItem = {
       id: Date.now().toString(),

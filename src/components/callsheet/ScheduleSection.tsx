@@ -1,4 +1,5 @@
-import { Calendar, Plus, X, Flag, Truck, ChevronUp, ChevronDown, GripVertical } from "lucide-react";
+import { Calendar, Plus, X, Flag, Truck, ChevronUp, ChevronDown } from "lucide-react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -29,6 +30,13 @@ interface Props {
 const ScheduleSection = ({ schedule, updateSchedule, talent = [], locations = [] }: Props) => {
   const castOptions = talent.map(t => `${t.name} - ${t.role}`).filter(Boolean);
   const locationOptions = locations.map(l => `${l.number}: ${l.setLocation}`).filter(Boolean);
+
+  // Add default empty scene if schedule is empty
+  React.useEffect(() => {
+    if (schedule.length === 0) {
+      addItem('scene');
+    }
+  }, []);
   const addItem = (type: 'scene' | 'banner' | 'company-move') => {
     const newItem: ScheduleItem = {
       id: Date.now().toString(),
@@ -76,7 +84,17 @@ const ScheduleSection = ({ schedule, updateSchedule, talent = [], locations = []
 
   const totalPages = schedule
     .filter(item => item.type === 'scene' && item.pages)
-    .reduce((sum, item) => sum + parseFloat(item.pages || '0'), 0);
+    .reduce((sum, item) => {
+      const pages = item.pages || '';
+      // Parse "X Y/8" format
+      const match = pages.match(/^(\d+)?\s*(\d+\/8)?$/);
+      if (match) {
+        const whole = parseInt(match[1] || '0');
+        const fraction = match[2] ? eval(match[2]) : 0;
+        return sum + whole + fraction;
+      }
+      return sum;
+    }, 0);
 
   return (
     <div className="border-2 border-[hsl(var(--sheet-border))] rounded-lg p-6">
@@ -127,8 +145,12 @@ const ScheduleSection = ({ schedule, updateSchedule, talent = [], locations = []
             <div key={item.id}>
               {item.type === 'banner' && (
                 <div className="bg-[hsl(var(--sheet-header-bg))] p-2 rounded flex items-center gap-2">
-                  <GripVertical className="h-4 w-4 text-[hsl(var(--label-text))]" />
                   <Flag className="h-4 w-4 text-primary" />
+                  <TimeInput
+                    value={item.time || ''}
+                    onChange={(v) => updateItem(item.id, 'time', v)}
+                    className="w-32 h-8"
+                  />
                   <Input
                     placeholder="Banner text..."
                     value={item.bannerText}
@@ -145,13 +167,11 @@ const ScheduleSection = ({ schedule, updateSchedule, talent = [], locations = []
 
               {item.type === 'company-move' && (
                 <div className="bg-[hsl(var(--sheet-header-bg))] p-2 rounded flex items-center gap-2">
-                  <GripVertical className="h-4 w-4 text-[hsl(var(--label-text))]" />
                   <Truck className="h-4 w-4 text-primary" />
                   <span className="font-semibold">Company Move at</span>
-                  <Input
-                    type="time"
-                    value={item.time}
-                    onChange={(e) => updateItem(item.id, 'time', e.target.value)}
+                  <TimeInput
+                    value={item.time || ''}
+                    onChange={(v) => updateItem(item.id, 'time', v)}
                     className="w-32 h-8"
                   />
                   <div className="flex gap-1 ml-auto">
@@ -165,17 +185,14 @@ const ScheduleSection = ({ schedule, updateSchedule, talent = [], locations = []
               {item.type === 'scene' && (
                 <div className="grid grid-cols-12 gap-2 items-center">
                   <div className="col-span-1 flex items-center gap-1">
-                    <GripVertical className="h-4 w-4 text-[hsl(var(--label-text))]" />
                     <div className="flex flex-col">
                       <Button size="sm" variant="ghost" className="h-4 p-0" onClick={() => moveItem(item.id, 'up')}>↑</Button>
                       <Button size="sm" variant="ghost" className="h-4 p-0" onClick={() => moveItem(item.id, 'down')}>↓</Button>
                     </div>
                   </div>
-                  <Input
-                    type="time"
-                    placeholder="Time"
-                    value={item.time}
-                    onChange={(e) => updateItem(item.id, 'time', e.target.value)}
+                  <TimeInput
+                    value={item.time || ''}
+                    onChange={(v) => updateItem(item.id, 'time', v)}
                     className="col-span-1 h-8 text-xs"
                   />
                   <Input
@@ -195,29 +212,30 @@ const ScheduleSection = ({ schedule, updateSchedule, talent = [], locations = []
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="D">D</SelectItem>
-                      <SelectItem value="N">N</SelectItem>
+                      <SelectItem value="Day">Day</SelectItem>
+                      <SelectItem value="Night">Night</SelectItem>
+                      <SelectItem value="Morning">Morning</SelectItem>
+                      <SelectItem value="Evening">Evening</SelectItem>
                     </SelectContent>
                   </Select>
-                  <Input
+                  <AutocompleteInput
+                    value={item.cast || ''}
+                    onChange={(v) => updateItem(item.id, 'cast', v)}
+                    options={castOptions}
                     placeholder="Cast"
-                    value={item.cast}
-                    onChange={(e) => updateItem(item.id, 'cast', e.target.value)}
                     className="col-span-2 h-8 text-xs"
                   />
-                  <Input
+                  <AutocompleteInput
+                    value={item.location || ''}
+                    onChange={(v) => updateItem(item.id, 'location', v)}
+                    options={locationOptions}
                     placeholder="Location"
-                    value={item.location}
-                    onChange={(e) => updateItem(item.id, 'location', e.target.value)}
                     className="col-span-2 h-8 text-xs"
                   />
                   <div className="col-span-1 flex gap-1">
-                    <Input
-                      placeholder="Pages"
-                      type="number"
-                      step="0.125"
-                      value={item.pages}
-                      onChange={(e) => updateItem(item.id, 'pages', e.target.value)}
+                    <PagesInput
+                      value={item.pages || ''}
+                      onChange={(v) => updateItem(item.id, 'pages', v)}
                       className="h-8 text-xs w-16"
                     />
                     <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => removeItem(item.id)}>

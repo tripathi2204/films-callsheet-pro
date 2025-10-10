@@ -1,4 +1,5 @@
 import { MapPin, Plus, X } from "lucide-react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -16,6 +17,13 @@ interface Props {
 }
 
 const LocationsSection = ({ locations, updateLocations }: Props) => {
+  // Add default empty location if none exist
+  React.useEffect(() => {
+    if (locations.length === 0) {
+      addLocation();
+    }
+  }, []);
+
   const addLocation = () => {
     const newLocation: LocationItem = {
       id: Date.now().toString(),

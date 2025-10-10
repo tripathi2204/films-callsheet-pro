@@ -22,6 +22,7 @@ const DEPARTMENTS = [
 ];
 
 const RadioChannelsSection = ({ channels, updateChannels }: Props) => {
+
   const addChannel = () => {
     const newChannel: RadioChannel = {
       id: Date.now().toString(),

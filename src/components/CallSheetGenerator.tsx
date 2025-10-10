@@ -9,6 +9,7 @@ import LocationsSection from "./callsheet/LocationsSection";
 import DepartmentNotesSection from "./callsheet/DepartmentNotesSection";
 import AdvanceScheduleSection from "./callsheet/AdvanceScheduleSection";
 import RadioChannelsSection from "./callsheet/RadioChannelsSection";
+import CallSheetPrintLayout from "./callsheet/CallSheetPrintLayout";
 
 export interface CallSheetData {
   movieName: string;
@@ -93,7 +94,8 @@ const CallSheetGenerator = () => {
   };
 
   const handleExportPDF = () => {
-    toast.success("PDF export will be available soon!");
+    window.print();
+    toast.success("Opening print dialog...");
   };
 
   const handleEmail = () => {
@@ -155,15 +157,14 @@ const CallSheetGenerator = () => {
 
       {/* Action Buttons at Bottom */}
       <div className="mt-8 flex flex-wrap gap-4 justify-center print:hidden">
-        <Button onClick={handleExportPDF} variant="default" className="gap-2">
+        <Button onClick={handleExportPDF} variant="default" className="gap-2" size="lg">
           <FileDown className="h-4 w-4" />
           Export PDF
         </Button>
-        <Button onClick={handleEmail} variant="default" className="gap-2">
-          <Mail className="h-4 w-4" />
-          Email
-        </Button>
       </div>
+
+      {/* Print Layout */}
+      <CallSheetPrintLayout data={callSheetData} />
     </div>
   );
 };
