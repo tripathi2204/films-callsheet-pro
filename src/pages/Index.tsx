@@ -24,12 +24,16 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-      <Hero />
+      <div className="print:hidden">
+        <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+        <Hero />
+      </div>
       <div id="call-sheet-generator">
         <CallSheetGenerator />
       </div>
-      <Footer />
+      <div className="print:hidden">
+        <Footer />
+      </div>
     </div>
   );
 };

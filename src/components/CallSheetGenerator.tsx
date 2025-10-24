@@ -94,7 +94,19 @@ const CallSheetGenerator = () => {
   };
 
   const handleExportPDF = () => {
+    // Update document title before printing
+    const originalTitle = document.title;
+    const movieName = callSheetData.movieName || 'YOUR MOVIE NAME';
+    const shootDay = callSheetData.shootDay || '1';
+    document.title = `${movieName} Shoot Day ${shootDay}`;
+    
     window.print();
+    
+    // Restore original title after a short delay
+    setTimeout(() => {
+      document.title = originalTitle;
+    }, 1000);
+    
     toast.success("Opening print dialog...");
   };
 
@@ -113,8 +125,8 @@ const CallSheetGenerator = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
-      {/* Call Sheet */}
-      <div className="bg-[hsl(var(--sheet-bg))] border-2 border-[hsl(var(--sheet-border))] rounded-lg p-6 md:p-8 shadow-lg">
+      {/* Call Sheet - Editable Version (Hidden on Print) */}
+      <div className="bg-[hsl(var(--sheet-bg))] border-2 border-[hsl(var(--sheet-border))] rounded-lg p-6 md:p-8 shadow-lg print:hidden">
         <CallSheetHeader 
           data={callSheetData}
           updateData={updateCallSheetData}
