@@ -178,8 +178,6 @@ const CallSheetGenerator = () => {
         <p className="text-sm text-center text-muted-foreground max-w-2xl px-4">
           NOTE: For best export quality, please use this app on a desktop or in desktop view on your mobile device. 
           Also, choose 'Save as PDF' as your printer from the Destination menu.
-          <br />
-          <strong>IMPORTANT:</strong> To remove date/time headers and URL footers, uncheck "Headers and footers" in your browser's print settings.
         </p>
       </div>
 
