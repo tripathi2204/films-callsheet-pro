@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, X, Upload, Sun } from "lucide-react";
 import { CallSheetData } from "../CallSheetGenerator";
 import AutocompleteInput from "@/components/ui/autocomplete-input";
-import TimeInput from "@/components/ui/time-input";
+
 
 interface Props {
   data: CallSheetData;
@@ -153,13 +153,14 @@ const CallSheetHeader = ({ data, updateData }: Props) => {
           />
         </div>
 
-        <p className="text-sm font-semibold">General Crew Call</p>
-        
-        <div className="flex justify-center">
-          <TimeInput
+        <div>
+          <label className="text-sm font-semibold">General Crew Call</label>
+          <Input
+            type="text"
+            placeholder="6:00 AM"
             value={data.generalCrewCall}
-            onChange={handleGeneralCrewCallChange}
-            className="scale-125"
+            onChange={(e) => handleGeneralCrewCallChange(e.target.value)}
+            className="text-center text-sm h-9"
           />
         </div>
 
@@ -252,14 +253,17 @@ const CallSheetHeader = ({ data, updateData }: Props) => {
           {data.callTimes.map((ct, index) => (
             <div key={index} className="flex items-center gap-2 text-xs">
               <span className="flex-1 font-medium">{ct.name}:</span>
-              <TimeInput
+              <Input
+                type="text"
+                placeholder="6:00 AM"
                 value={ct.time}
-                onChange={(v) => {
+                onChange={(e) => {
                   const updated = data.callTimes.map((item, i) => 
-                    i === index ? { ...item, time: v } : item
+                    i === index ? { ...item, time: e.target.value } : item
                   );
                   updateData('callTimes', updated);
                 }}
+                className="text-xs h-7 w-24"
               />
               {index !== 0 && (
                 <Button
