@@ -14,6 +14,16 @@ const CallSheetPrintLayout = ({ data }: Props) => {
             margin: 0.5in;
           }
           
+          /* Remove browser-generated headers and footers */
+          @page {
+            margin: 0.5in 0.5in 0.5in 0.5in;
+          }
+          
+          html, body {
+            margin: 0;
+            padding: 0;
+          }
+          
           body {
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
