@@ -146,6 +146,8 @@ const CallSheetGenerator = () => {
           <AdvanceScheduleSection 
             schedule={callSheetData.advanceSchedule}
             updateSchedule={(schedule) => updateCallSheetData('advanceSchedule', schedule)}
+            talent={callSheetData.talent}
+            locations={callSheetData.locations}
           />
 
           <RadioChannelsSection 
@@ -156,11 +158,15 @@ const CallSheetGenerator = () => {
       </div>
 
       {/* Action Buttons at Bottom */}
-      <div className="mt-8 flex flex-wrap gap-4 justify-center print:hidden">
+      <div className="mt-8 flex flex-col items-center gap-4 print:hidden">
         <Button onClick={handleExportPDF} variant="default" className="gap-2" size="lg">
           <FileDown className="h-4 w-4" />
           Export PDF
         </Button>
+        <p className="text-sm text-center text-muted-foreground max-w-2xl px-4">
+          NOTE: For best export quality, please use this app on a desktop or in desktop view on your mobile device. 
+          Also, choose 'Save as PDF' as your printer from the Destination menu.
+        </p>
       </div>
 
       {/* Print Layout */}

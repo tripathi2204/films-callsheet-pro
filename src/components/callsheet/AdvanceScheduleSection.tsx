@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import PagesInput from "@/components/ui/pages-input";
+import AutocompleteInput from "@/components/ui/autocomplete-input";
 
 interface AdvanceScheduleItem {
   id: string;
@@ -19,9 +20,13 @@ interface AdvanceScheduleItem {
 interface Props {
   schedule: AdvanceScheduleItem[];
   updateSchedule: (schedule: AdvanceScheduleItem[]) => void;
+  talent?: Array<{ name: string; role: string }>;
+  locations?: Array<{ number: string; setLocation: string }>;
 }
 
-const AdvanceScheduleSection = ({ schedule, updateSchedule }: Props) => {
+const AdvanceScheduleSection = ({ schedule, updateSchedule, talent = [], locations = [] }: Props) => {
+  const castOptions = talent.map(t => t.role).filter(Boolean);
+  const locationOptions = locations.map(l => l.setLocation).filter(Boolean);
   const addItem = () => {
     const newItem: AdvanceScheduleItem = {
       id: Date.now().toString(),
@@ -137,16 +142,18 @@ const AdvanceScheduleSection = ({ schedule, updateSchedule }: Props) => {
                     <SelectItem value="Evening">Evening</SelectItem>
                   </SelectContent>
                 </Select>
-                <Input
-                  placeholder="Cast"
+                <AutocompleteInput
                   value={item.cast}
-                  onChange={(e) => updateItem(item.id, 'cast', e.target.value)}
+                  onChange={(v) => updateItem(item.id, 'cast', v)}
+                  options={castOptions}
+                  placeholder="Cast (comma-separated)"
                   className="h-8 text-xs"
                 />
-                <Input
-                  placeholder="Location"
+                <AutocompleteInput
                   value={item.location}
-                  onChange={(e) => updateItem(item.id, 'location', e.target.value)}
+                  onChange={(v) => updateItem(item.id, 'location', v)}
+                  options={locationOptions}
+                  placeholder="Location"
                   className="h-8 text-xs"
                 />
                 <PagesInput
@@ -230,19 +237,21 @@ const AdvanceScheduleSection = ({ schedule, updateSchedule }: Props) => {
                 </div>
                 <div>
                   <label className="text-xs text-[hsl(var(--label-text))]">Cast</label>
-                  <Input
-                    placeholder="Cast"
+                  <AutocompleteInput
                     value={item.cast}
-                    onChange={(e) => updateItem(item.id, 'cast', e.target.value)}
+                    onChange={(v) => updateItem(item.id, 'cast', v)}
+                    options={castOptions}
+                    placeholder="Cast (comma-separated)"
                     className="h-8 text-xs"
                   />
                 </div>
                 <div>
                   <label className="text-xs text-[hsl(var(--label-text))]">Location</label>
-                  <Input
-                    placeholder="Location"
+                  <AutocompleteInput
                     value={item.location}
-                    onChange={(e) => updateItem(item.id, 'location', e.target.value)}
+                    onChange={(v) => updateItem(item.id, 'location', v)}
+                    options={locationOptions}
+                    placeholder="Location"
                     className="h-8 text-xs"
                   />
                 </div>
