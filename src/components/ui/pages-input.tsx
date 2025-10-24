@@ -47,6 +47,14 @@ const PagesInput = ({ value, onChange, className }: PagesInputProps) => {
     updateValue(val, eighths);
   };
 
+  const handleEighthsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value.replace(/\D/g, '');
+    const num = parseInt(val) || 0;
+    if (num >= 0 && num <= 7) {
+      updateValue(whole, num.toString());
+    }
+  };
+
   return (
     <div className={`flex items-center gap-1 ${className}`}>
       <Input
@@ -56,21 +64,13 @@ const PagesInput = ({ value, onChange, className }: PagesInputProps) => {
         onChange={handleWholeChange}
         className="w-12 h-8 text-xs text-center p-1"
       />
-      <Select value={eighths} onValueChange={(v) => updateValue(whole, v)}>
-        <SelectTrigger className="h-8 w-16 text-xs">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="0">0/8</SelectItem>
-          <SelectItem value="1">1/8</SelectItem>
-          <SelectItem value="2">2/8</SelectItem>
-          <SelectItem value="3">3/8</SelectItem>
-          <SelectItem value="4">4/8</SelectItem>
-          <SelectItem value="5">5/8</SelectItem>
-          <SelectItem value="6">6/8</SelectItem>
-          <SelectItem value="7">7/8</SelectItem>
-        </SelectContent>
-      </Select>
+      <Input
+        type="text"
+        placeholder="0/8"
+        value={eighths === '0' ? '' : `${eighths}/8`}
+        onChange={handleEighthsChange}
+        className="w-12 h-8 text-xs text-center p-1"
+      />
     </div>
   );
 };

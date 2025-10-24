@@ -28,8 +28,8 @@ interface Props {
 }
 
 const ScheduleSection = ({ schedule, updateSchedule, talent = [], locations = [] }: Props) => {
-  const castOptions = talent.map(t => `${t.name} - ${t.role}`).filter(Boolean);
-  const locationOptions = locations.map(l => `${l.number}: ${l.setLocation}`).filter(Boolean);
+  const castOptions = talent.map(t => t.role).filter(Boolean);
+  const locationOptions = locations.map(l => l.setLocation).filter(Boolean);
 
   // Add default empty scene if schedule is empty
   React.useEffect(() => {
@@ -129,120 +129,237 @@ const ScheduleSection = ({ schedule, updateSchedule, talent = [], locations = []
       ) : (
         <div className="space-y-2">
           {/* Header Row */}
-          <div className="grid grid-cols-12 gap-2 text-xs font-semibold text-[hsl(var(--label-text))] pb-2 border-b border-[hsl(var(--sheet-border))]">
-            <div className="col-span-1">Move</div>
-            <div className="col-span-1">Time</div>
-            <div className="col-span-1">Scene No.</div>
-            <div className="col-span-3">Description</div>
-            <div className="col-span-1">D/N</div>
-            <div className="col-span-2">Cast</div>
-            <div className="col-span-2">Location</div>
-            <div className="col-span-1">Pages</div>
+          <div className="hidden md:grid grid-cols-[40px_90px_60px_minmax(150px,1fr)_80px_120px_120px_100px_40px] gap-2 text-xs font-semibold text-[hsl(var(--label-text))] pb-2 border-b border-[hsl(var(--sheet-border))]">
+            <div>Move</div>
+            <div>Time</div>
+            <div>Scene No.</div>
+            <div>Description</div>
+            <div>D/N</div>
+            <div>Cast</div>
+            <div>Location</div>
+            <div>Pages</div>
+            <div></div>
           </div>
 
           {/* Schedule Items */}
           {schedule.map((item, index) => (
             <div key={item.id}>
               {item.type === 'banner' && (
-                <div className="bg-[hsl(var(--sheet-header-bg))] p-2 rounded flex items-center gap-2">
-                  <Flag className="h-4 w-4 text-primary" />
-                  <TimeInput
-                    value={item.time || ''}
-                    onChange={(v) => updateItem(item.id, 'time', v)}
-                    className="w-32 h-8"
-                  />
-                  <Input
-                    placeholder="Banner text..."
-                    value={item.bannerText}
-                    onChange={(e) => updateItem(item.id, 'bannerText', e.target.value)}
-                    className="flex-1 h-8"
-                  />
-                  <div className="flex gap-1">
-                    <Button size="sm" variant="ghost" onClick={() => moveItem(item.id, 'up')}>↑</Button>
-                    <Button size="sm" variant="ghost" onClick={() => moveItem(item.id, 'down')}>↓</Button>
-                    <Button size="sm" variant="ghost" onClick={() => removeItem(item.id)}><X className="h-4 w-4" /></Button>
-                  </div>
-                </div>
-              )}
-
-              {item.type === 'company-move' && (
-                <div className="bg-[hsl(var(--sheet-header-bg))] p-2 rounded flex items-center gap-2">
-                  <Truck className="h-4 w-4 text-primary" />
-                  <span className="font-semibold">Company Move at</span>
-                  <TimeInput
-                    value={item.time || ''}
-                    onChange={(v) => updateItem(item.id, 'time', v)}
-                    className="w-32 h-8"
-                  />
-                  <div className="flex gap-1 ml-auto">
-                    <Button size="sm" variant="ghost" onClick={() => moveItem(item.id, 'up')}>↑</Button>
-                    <Button size="sm" variant="ghost" onClick={() => moveItem(item.id, 'down')}>↓</Button>
-                    <Button size="sm" variant="ghost" onClick={() => removeItem(item.id)}><X className="h-4 w-4" /></Button>
-                  </div>
-                </div>
-              )}
-
-              {item.type === 'scene' && (
-                <div className="grid grid-cols-12 gap-2 items-center">
-                  <div className="col-span-1 flex items-center gap-1">
-                    <div className="flex flex-col">
-                      <Button size="sm" variant="ghost" className="h-4 p-0" onClick={() => moveItem(item.id, 'up')}>↑</Button>
-                      <Button size="sm" variant="ghost" className="h-4 p-0" onClick={() => moveItem(item.id, 'down')}>↓</Button>
-                    </div>
-                  </div>
-                  <TimeInput
-                    value={item.time || ''}
-                    onChange={(v) => updateItem(item.id, 'time', v)}
-                    className="col-span-1 h-8 text-xs"
-                  />
-                  <Input
-                    placeholder="Scene"
-                    value={item.sceneNo}
-                    onChange={(e) => updateItem(item.id, 'sceneNo', e.target.value)}
-                    className="col-span-1 h-8 text-xs"
-                  />
-                  <Input
-                    placeholder="Description"
-                    value={item.description}
-                    onChange={(e) => updateItem(item.id, 'description', e.target.value)}
-                    className="col-span-3 h-8 text-xs"
-                  />
-                  <Select value={item.dn} onValueChange={(v) => updateItem(item.id, 'dn', v)}>
-                    <SelectTrigger className="col-span-1 h-8 text-xs">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Day">Day</SelectItem>
-                      <SelectItem value="Night">Night</SelectItem>
-                      <SelectItem value="Morning">Morning</SelectItem>
-                      <SelectItem value="Evening">Evening</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <AutocompleteInput
-                    value={item.cast || ''}
-                    onChange={(v) => updateItem(item.id, 'cast', v)}
-                    options={castOptions}
-                    placeholder="Cast"
-                    className="col-span-2 h-8 text-xs"
-                  />
-                  <AutocompleteInput
-                    value={item.location || ''}
-                    onChange={(v) => updateItem(item.id, 'location', v)}
-                    options={locationOptions}
-                    placeholder="Location"
-                    className="col-span-2 h-8 text-xs"
-                  />
-                  <div className="col-span-1 flex gap-1">
-                    <PagesInput
-                      value={item.pages || ''}
-                      onChange={(v) => updateItem(item.id, 'pages', v)}
-                      className="h-8 text-xs w-16"
+                <div className="bg-[hsl(var(--sheet-header-bg))] p-2 rounded flex flex-col md:flex-row items-start md:items-center gap-2">
+                  <Flag className="h-4 w-4 text-primary flex-shrink-0" />
+                  <div className="flex items-center gap-2 flex-1 w-full">
+                    <Input
+                      type="text"
+                      placeholder="6:00 AM"
+                      value={item.time || ''}
+                      onChange={(e) => updateItem(item.id, 'time', e.target.value)}
+                      className="w-full md:w-32 h-8 text-xs"
                     />
+                    <Input
+                      placeholder="Banner text..."
+                      value={item.bannerText}
+                      onChange={(e) => updateItem(item.id, 'bannerText', e.target.value)}
+                      className="flex-1 h-8 text-xs"
+                    />
+                  </div>
+                  <div className="flex gap-1">
+                    <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => moveItem(item.id, 'up')}>
+                      <ChevronUp className="h-5 w-5" />
+                    </Button>
+                    <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => moveItem(item.id, 'down')}>
+                      <ChevronDown className="h-5 w-5" />
+                    </Button>
                     <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => removeItem(item.id)}>
                       <X className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>
+              )}
+
+              {item.type === 'company-move' && (
+                <div className="bg-[hsl(var(--sheet-header-bg))] p-2 rounded flex flex-col md:flex-row items-start md:items-center gap-2">
+                  <div className="flex items-center gap-2 flex-1">
+                    <Truck className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span className="font-semibold text-xs">Company Move at</span>
+                    <Input
+                      type="text"
+                      placeholder="6:00 AM"
+                      value={item.time || ''}
+                      onChange={(e) => updateItem(item.id, 'time', e.target.value)}
+                      className="w-full md:w-32 h-8 text-xs"
+                    />
+                  </div>
+                  <div className="flex gap-1 ml-auto">
+                    <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => moveItem(item.id, 'up')}>
+                      <ChevronUp className="h-5 w-5" />
+                    </Button>
+                    <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => moveItem(item.id, 'down')}>
+                      <ChevronDown className="h-5 w-5" />
+                    </Button>
+                    <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => removeItem(item.id)}>
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              {item.type === 'scene' && (
+                <>
+                  {/* Desktop View */}
+                  <div className="hidden md:grid grid-cols-[40px_90px_60px_minmax(150px,1fr)_80px_120px_120px_100px_40px] gap-2 items-center">
+                    <div className="flex flex-col gap-1">
+                      <Button size="sm" variant="ghost" className="h-5 w-8 p-0" onClick={() => moveItem(item.id, 'up')}>
+                        <ChevronUp className="h-5 w-5" />
+                      </Button>
+                      <Button size="sm" variant="ghost" className="h-5 w-8 p-0" onClick={() => moveItem(item.id, 'down')}>
+                        <ChevronDown className="h-5 w-5" />
+                      </Button>
+                    </div>
+                    <Input
+                      type="text"
+                      placeholder="6:00 AM"
+                      value={item.time || ''}
+                      onChange={(e) => updateItem(item.id, 'time', e.target.value)}
+                      className="h-8 text-xs"
+                    />
+                    <Input
+                      placeholder="Scene"
+                      value={item.sceneNo}
+                      onChange={(e) => updateItem(item.id, 'sceneNo', e.target.value)}
+                      className="h-8 text-xs"
+                    />
+                    <Input
+                      placeholder="Description"
+                      value={item.description}
+                      onChange={(e) => updateItem(item.id, 'description', e.target.value)}
+                      className="h-8 text-xs"
+                    />
+                    <Select value={item.dn} onValueChange={(v) => updateItem(item.id, 'dn', v)}>
+                      <SelectTrigger className="h-8 text-xs">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Day">Day</SelectItem>
+                        <SelectItem value="Night">Night</SelectItem>
+                        <SelectItem value="Morning">Morning</SelectItem>
+                        <SelectItem value="Evening">Evening</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <AutocompleteInput
+                      value={item.cast || ''}
+                      onChange={(v) => updateItem(item.id, 'cast', v)}
+                      options={castOptions}
+                      placeholder="Cast"
+                      className="h-8 text-xs"
+                    />
+                    <AutocompleteInput
+                      value={item.location || ''}
+                      onChange={(v) => updateItem(item.id, 'location', v)}
+                      options={locationOptions}
+                      placeholder="Location"
+                      className="h-8 text-xs"
+                    />
+                    <PagesInput
+                      value={item.pages || ''}
+                      onChange={(v) => updateItem(item.id, 'pages', v)}
+                      className="h-8 text-xs"
+                    />
+                    <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => removeItem(item.id)}>
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+
+                  {/* Mobile View */}
+                  <div className="md:hidden border border-[hsl(var(--sheet-border))] rounded-lg p-3 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex gap-1">
+                        <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => moveItem(item.id, 'up')}>
+                          <ChevronUp className="h-4 w-4" />
+                        </Button>
+                        <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => moveItem(item.id, 'down')}>
+                          <ChevronDown className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => removeItem(item.id)}>
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="text-xs text-[hsl(var(--label-text))]">Time</label>
+                        <Input
+                          type="text"
+                          placeholder="6:00 AM"
+                          value={item.time || ''}
+                          onChange={(e) => updateItem(item.id, 'time', e.target.value)}
+                          className="h-8 text-xs"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs text-[hsl(var(--label-text))]">Scene No.</label>
+                        <Input
+                          placeholder="Scene"
+                          value={item.sceneNo}
+                          onChange={(e) => updateItem(item.id, 'sceneNo', e.target.value)}
+                          className="h-8 text-xs"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-xs text-[hsl(var(--label-text))]">Description</label>
+                      <Input
+                        placeholder="Description"
+                        value={item.description}
+                        onChange={(e) => updateItem(item.id, 'description', e.target.value)}
+                        className="h-8 text-xs"
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="text-xs text-[hsl(var(--label-text))]">D/N</label>
+                        <Select value={item.dn} onValueChange={(v) => updateItem(item.id, 'dn', v)}>
+                          <SelectTrigger className="h-8 text-xs">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Day">Day</SelectItem>
+                            <SelectItem value="Night">Night</SelectItem>
+                            <SelectItem value="Morning">Morning</SelectItem>
+                            <SelectItem value="Evening">Evening</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <label className="text-xs text-[hsl(var(--label-text))]">Pages</label>
+                        <PagesInput
+                          value={item.pages || ''}
+                          onChange={(v) => updateItem(item.id, 'pages', v)}
+                          className="h-8 text-xs"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-xs text-[hsl(var(--label-text))]">Cast</label>
+                      <AutocompleteInput
+                        value={item.cast || ''}
+                        onChange={(v) => updateItem(item.id, 'cast', v)}
+                        options={castOptions}
+                        placeholder="Cast"
+                        className="h-8 text-xs"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs text-[hsl(var(--label-text))]">Location</label>
+                      <AutocompleteInput
+                        value={item.location || ''}
+                        onChange={(v) => updateItem(item.id, 'location', v)}
+                        options={locationOptions}
+                        placeholder="Location"
+                        className="h-8 text-xs"
+                      />
+                    </div>
+                  </div>
+                </>
               )}
             </div>
           ))}
