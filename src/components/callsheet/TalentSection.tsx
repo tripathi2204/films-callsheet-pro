@@ -3,7 +3,6 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import TimeInput from "@/components/ui/time-input";
 
 interface TalentItem {
   id: string;
@@ -118,12 +117,20 @@ const TalentSection = ({ talent, updateTalent }: Props) => {
                   onChange={(e) => updateItem(item.id, 'role', e.target.value)}
                   className="col-span-2 h-8 text-xs"
                 />
-                <div className="col-span-1">
-                  <TimeInput value={item.makeup} onChange={(v) => updateItem(item.id, 'makeup', v)} />
-                </div>
-                <div className="col-span-1">
-                  <TimeInput value={item.callTime} onChange={(v) => updateItem(item.id, 'callTime', v)} />
-                </div>
+                <Input
+                  type="text"
+                  placeholder="6:00 AM"
+                  value={item.makeup}
+                  onChange={(e) => updateItem(item.id, 'makeup', e.target.value)}
+                  className="col-span-1 h-8 text-xs"
+                />
+                <Input
+                  type="text"
+                  placeholder="6:00 AM"
+                  value={item.callTime}
+                  onChange={(e) => updateItem(item.id, 'callTime', e.target.value)}
+                  className="col-span-1 h-8 text-xs"
+                />
                 <Input
                   placeholder="Contact"
                   value={item.contact}
@@ -194,11 +201,23 @@ const TalentSection = ({ talent, updateTalent }: Props) => {
                     <div className="grid grid-cols-2 gap-2">
                       <div>
                         <label className="text-xs text-[hsl(var(--label-text))]">Makeup</label>
-                        <TimeInput value={item.makeup} onChange={(v) => updateItem(item.id, 'makeup', v)} />
+                        <Input
+                          type="text"
+                          placeholder="6:00 AM"
+                          value={item.makeup}
+                          onChange={(e) => updateItem(item.id, 'makeup', e.target.value)}
+                          className="h-8 text-xs"
+                        />
                       </div>
                       <div>
                         <label className="text-xs text-[hsl(var(--label-text))]">Call Time</label>
-                        <TimeInput value={item.callTime} onChange={(v) => updateItem(item.id, 'callTime', v)} />
+                        <Input
+                          type="text"
+                          placeholder="6:00 AM"
+                          value={item.callTime}
+                          onChange={(e) => updateItem(item.id, 'callTime', e.target.value)}
+                          className="h-8 text-xs"
+                        />
                       </div>
                     </div>
                     <div>
