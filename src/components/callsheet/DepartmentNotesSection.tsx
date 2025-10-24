@@ -57,13 +57,13 @@ const DepartmentNotesSection = ({ notes, updateNotes }: Props) => {
   };
 
   return (
-    <div className="border-2 border-[hsl(var(--sheet-border))] rounded-lg p-6">
-      <div className="flex items-center justify-between mb-4">
+    <div className="border-2 border-[hsl(var(--sheet-border))] rounded-lg p-4 md:p-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
         <div className="flex items-center gap-2">
           <FileText className="h-5 w-5 text-primary" />
           <h2 className="text-xl font-bold">Department Notes</h2>
         </div>
-        <Button size="sm" variant="outline" onClick={addNote}>
+        <Button size="sm" variant="outline" onClick={addNote} className="w-full sm:w-auto">
           <Plus className="h-4 w-4 mr-1" />
           Add Note
         </Button>
@@ -76,26 +76,51 @@ const DepartmentNotesSection = ({ notes, updateNotes }: Props) => {
       ) : (
         <div className="space-y-3">
           {notes.map(item => (
-            <div key={item.id} className="grid grid-cols-12 gap-2 items-start">
-              <div className="col-span-3">
-                <AutocompleteInput
-                  value={item.department}
-                  onChange={(v) => updateItem(item.id, 'department', v)}
-                  options={DEPARTMENTS}
-                  placeholder="Department"
-                  className="h-8 text-xs"
+            <div key={item.id}>
+              {/* Desktop View */}
+              <div className="hidden md:grid grid-cols-12 gap-2 items-start">
+                <div className="col-span-3">
+                  <AutocompleteInput
+                    value={item.department}
+                    onChange={(v) => updateItem(item.id, 'department', v)}
+                    options={DEPARTMENTS}
+                    placeholder="Department"
+                    className="h-8 text-xs"
+                  />
+                </div>
+                <Textarea
+                  placeholder="Notes..."
+                  value={item.notes}
+                  onChange={(e) => updateItem(item.id, 'notes', e.target.value)}
+                  className="col-span-8 min-h-[60px] text-xs"
                 />
+                <div className="col-span-1">
+                  <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => removeItem(item.id)}>
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
-              <Textarea
-                placeholder="Notes..."
-                value={item.notes}
-                onChange={(e) => updateItem(item.id, 'notes', e.target.value)}
-                className="col-span-8 min-h-[60px] text-xs"
-              />
-              <div className="col-span-1">
-                <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => removeItem(item.id)}>
-                  <X className="h-4 w-4" />
-                </Button>
+
+              {/* Mobile View */}
+              <div className="md:hidden border border-[hsl(var(--sheet-border))] rounded p-3 space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <AutocompleteInput
+                    value={item.department}
+                    onChange={(v) => updateItem(item.id, 'department', v)}
+                    options={DEPARTMENTS}
+                    placeholder="Department"
+                    className="h-8 text-xs flex-1"
+                  />
+                  <Button size="sm" variant="ghost" className="h-8 w-8 p-0 flex-shrink-0" onClick={() => removeItem(item.id)}>
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+                <Textarea
+                  placeholder="Notes..."
+                  value={item.notes}
+                  onChange={(e) => updateItem(item.id, 'notes', e.target.value)}
+                  className="min-h-[60px] text-xs w-full"
+                />
               </div>
             </div>
           ))}
