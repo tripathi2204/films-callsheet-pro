@@ -29,15 +29,32 @@ const AutocompleteInput = ({ value, onChange, options, placeholder, className }:
     const inputValue = e.target.value;
     onChange(inputValue);
     
+    // Get the text after the last comma for autocomplete
+    const lastCommaIndex = inputValue.lastIndexOf(',');
+    const currentEntry = lastCommaIndex >= 0 
+      ? inputValue.substring(lastCommaIndex + 1).trim() 
+      : inputValue.trim();
+    
     const filtered = options.filter(option =>
-      option.toLowerCase().includes(inputValue.toLowerCase())
+      option.toLowerCase().includes(currentEntry.toLowerCase())
     );
     setFilteredOptions(filtered);
-    setIsOpen(inputValue.length > 0 && filtered.length > 0);
+    setIsOpen(currentEntry.length > 0 && filtered.length > 0);
   };
 
   const handleOptionClick = (option: string) => {
-    onChange(option);
+    // Handle comma-separated values
+    const lastCommaIndex = value.lastIndexOf(',');
+    let newValue: string;
+    
+    if (lastCommaIndex >= 0) {
+      // Replace the text after the last comma with the selected option
+      newValue = value.substring(0, lastCommaIndex + 1) + ' ' + option;
+    } else {
+      newValue = option;
+    }
+    
+    onChange(newValue);
     setIsOpen(false);
   };
 

@@ -98,7 +98,7 @@ const ScheduleSection = ({ schedule, updateSchedule, talent = [], locations = []
 
   return (
     <div className="border-2 border-[hsl(var(--sheet-border))] rounded-lg p-6">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mb-4">
         <div className="flex items-center gap-2">
           <Calendar className="h-5 w-5 text-primary" />
           <h2 className="text-xl font-bold">Schedule</h2>
@@ -106,16 +106,16 @@ const ScheduleSection = ({ schedule, updateSchedule, talent = [], locations = []
             Total Pages: {totalPages.toFixed(2)}
           </span>
         </div>
-        <div className="flex gap-2">
-          <Button size="sm" variant="outline" onClick={() => addItem('scene')}>
+        <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+          <Button size="sm" variant="outline" onClick={() => addItem('scene')} className="flex-1 sm:flex-none">
             <Plus className="h-4 w-4 mr-1" />
             Scene
           </Button>
-          <Button size="sm" variant="outline" onClick={() => addItem('banner')}>
+          <Button size="sm" variant="outline" onClick={() => addItem('banner')} className="flex-1 sm:flex-none">
             <Flag className="h-4 w-4 mr-1" />
             Banner
           </Button>
-          <Button size="sm" variant="outline" onClick={() => addItem('company-move')}>
+          <Button size="sm" variant="outline" onClick={() => addItem('company-move')} className="flex-1 sm:flex-none">
             <Truck className="h-4 w-4 mr-1" />
             Company Move
           </Button>
@@ -245,9 +245,10 @@ const ScheduleSection = ({ schedule, updateSchedule, talent = [], locations = []
                         <SelectItem value="Evening">Evening</SelectItem>
                       </SelectContent>
                     </Select>
-                    <Input
+                    <AutocompleteInput
                       value={item.cast || ''}
-                      onChange={(e) => updateItem(item.id, 'cast', e.target.value)}
+                      onChange={(v) => updateItem(item.id, 'cast', v)}
+                      options={castOptions}
                       placeholder="Cast (comma-separated)"
                       className="h-8 text-xs"
                     />
@@ -339,9 +340,10 @@ const ScheduleSection = ({ schedule, updateSchedule, talent = [], locations = []
                     </div>
                     <div>
                       <label className="text-xs text-[hsl(var(--label-text))]">Cast</label>
-                      <Input
+                      <AutocompleteInput
                         value={item.cast || ''}
-                        onChange={(e) => updateItem(item.id, 'cast', e.target.value)}
+                        onChange={(v) => updateItem(item.id, 'cast', v)}
+                        options={castOptions}
                         placeholder="Cast (comma-separated)"
                         className="h-8 text-xs"
                       />
