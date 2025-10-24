@@ -47,12 +47,8 @@ const PagesInput = ({ value, onChange, className }: PagesInputProps) => {
     updateValue(val, eighths);
   };
 
-  const handleEighthsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value.replace(/\D/g, '');
-    const num = parseInt(val) || 0;
-    if (num >= 0 && num <= 7) {
-      updateValue(whole, num.toString());
-    }
+  const handleEighthsChange = (val: string) => {
+    updateValue(whole, val);
   };
 
   return (
@@ -64,13 +60,21 @@ const PagesInput = ({ value, onChange, className }: PagesInputProps) => {
         onChange={handleWholeChange}
         className="w-12 h-8 text-xs text-center p-1"
       />
-      <Input
-        type="text"
-        placeholder="0/8"
-        value={eighths === '0' ? '' : `${eighths}/8`}
-        onChange={handleEighthsChange}
-        className="w-12 h-8 text-xs text-center p-1"
-      />
+      <Select value={eighths} onValueChange={handleEighthsChange}>
+        <SelectTrigger className="w-14 h-8 text-xs p-1">
+          <SelectValue placeholder="0/8" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="0">0/8</SelectItem>
+          <SelectItem value="1">1/8</SelectItem>
+          <SelectItem value="2">2/8</SelectItem>
+          <SelectItem value="3">3/8</SelectItem>
+          <SelectItem value="4">4/8</SelectItem>
+          <SelectItem value="5">5/8</SelectItem>
+          <SelectItem value="6">6/8</SelectItem>
+          <SelectItem value="7">7/8</SelectItem>
+        </SelectContent>
+      </Select>
     </div>
   );
 };

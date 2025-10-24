@@ -245,11 +245,10 @@ const ScheduleSection = ({ schedule, updateSchedule, talent = [], locations = []
                         <SelectItem value="Evening">Evening</SelectItem>
                       </SelectContent>
                     </Select>
-                    <AutocompleteInput
+                    <Input
                       value={item.cast || ''}
-                      onChange={(v) => updateItem(item.id, 'cast', v)}
-                      options={castOptions}
-                      placeholder="Cast"
+                      onChange={(e) => updateItem(item.id, 'cast', e.target.value)}
+                      placeholder="Cast (comma-separated)"
                       className="h-8 text-xs"
                     />
                     <AutocompleteInput
@@ -340,11 +339,10 @@ const ScheduleSection = ({ schedule, updateSchedule, talent = [], locations = []
                     </div>
                     <div>
                       <label className="text-xs text-[hsl(var(--label-text))]">Cast</label>
-                      <AutocompleteInput
+                      <Input
                         value={item.cast || ''}
-                        onChange={(v) => updateItem(item.id, 'cast', v)}
-                        options={castOptions}
-                        placeholder="Cast"
+                        onChange={(e) => updateItem(item.id, 'cast', e.target.value)}
+                        placeholder="Cast (comma-separated)"
                         className="h-8 text-xs"
                       />
                     </div>
