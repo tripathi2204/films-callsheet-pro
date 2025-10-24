@@ -3,7 +3,6 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import TimeInput from "@/components/ui/time-input";
 import PagesInput from "@/components/ui/pages-input";
 
 interface AdvanceScheduleItem {
@@ -65,12 +64,12 @@ const AdvanceScheduleSection = ({ schedule, updateSchedule }: Props) => {
 
   return (
     <div className="border-2 border-[hsl(var(--sheet-border))] rounded-lg p-6">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mb-4">
         <div className="flex items-center gap-2">
           <CalendarDays className="h-5 w-5 text-primary" />
           <h2 className="text-xl font-bold">Advance Schedule</h2>
         </div>
-        <Button size="sm" variant="outline" onClick={addItem}>
+        <Button size="sm" variant="outline" onClick={addItem} className="w-full sm:w-auto">
           <Plus className="h-4 w-4 mr-1" />
           Add Scene
         </Button>
@@ -82,76 +81,171 @@ const AdvanceScheduleSection = ({ schedule, updateSchedule }: Props) => {
         </div>
       ) : (
         <div className="space-y-2">
-          {/* Header Row */}
-          <div className="grid grid-cols-12 gap-2 text-xs font-semibold text-[hsl(var(--label-text))] pb-2 border-b border-[hsl(var(--sheet-border))]">
-            <div className="col-span-1">Move</div>
-            <div className="col-span-1">Time</div>
-            <div className="col-span-1">Scene No.</div>
-            <div className="col-span-3">Description</div>
-            <div className="col-span-1">D/N</div>
-            <div className="col-span-2">Cast</div>
-            <div className="col-span-2">Location</div>
-            <div className="col-span-1">Pages</div>
+          {/* Header Row - Desktop Only */}
+          <div className="hidden md:grid grid-cols-[40px_90px_60px_minmax(150px,1fr)_80px_120px_120px_100px_40px] gap-2 text-xs font-semibold text-[hsl(var(--label-text))] pb-2 border-b border-[hsl(var(--sheet-border))]">
+            <div>Move</div>
+            <div>Time</div>
+            <div>Scene No.</div>
+            <div>Description</div>
+            <div>D/N</div>
+            <div>Cast</div>
+            <div>Location</div>
+            <div>Pages</div>
+            <div></div>
           </div>
 
           {/* Schedule Items */}
           {schedule.map(item => (
-            <div key={item.id} className="grid grid-cols-12 gap-2 items-center">
-              <div className="col-span-1 flex items-center gap-1">
-                <div className="flex flex-col">
-                  <Button size="sm" variant="ghost" className="h-4 p-0" onClick={() => moveItem(item.id, 'up')}>↑</Button>
-                  <Button size="sm" variant="ghost" className="h-4 p-0" onClick={() => moveItem(item.id, 'down')}>↓</Button>
+            <div key={item.id}>
+              {/* Desktop View */}
+              <div className="hidden md:grid grid-cols-[40px_90px_60px_minmax(150px,1fr)_80px_120px_120px_100px_40px] gap-2 items-center">
+                <div className="flex flex-col gap-1">
+                  <Button size="sm" variant="ghost" className="h-5 w-8 p-0" onClick={() => moveItem(item.id, 'up')}>
+                    <ChevronUp className="h-5 w-5" />
+                  </Button>
+                  <Button size="sm" variant="ghost" className="h-5 w-8 p-0" onClick={() => moveItem(item.id, 'down')}>
+                    <ChevronDown className="h-5 w-5" />
+                  </Button>
                 </div>
-              </div>
-              <TimeInput
-                value={item.time}
-                onChange={(v) => updateItem(item.id, 'time', v)}
-                className="col-span-1 h-8 text-xs"
-              />
-              <Input
-                placeholder="Scene"
-                value={item.sceneNo}
-                onChange={(e) => updateItem(item.id, 'sceneNo', e.target.value)}
-                className="col-span-1 h-8 text-xs"
-              />
-              <Input
-                placeholder="Description"
-                value={item.description}
-                onChange={(e) => updateItem(item.id, 'description', e.target.value)}
-                className="col-span-3 h-8 text-xs"
-              />
-              <Select value={item.dn} onValueChange={(v) => updateItem(item.id, 'dn', v)}>
-                <SelectTrigger className="col-span-1 h-8 text-xs">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Day">Day</SelectItem>
-                  <SelectItem value="Night">Night</SelectItem>
-                  <SelectItem value="Morning">Morning</SelectItem>
-                  <SelectItem value="Evening">Evening</SelectItem>
-                </SelectContent>
-              </Select>
-              <Input
-                placeholder="Cast"
-                value={item.cast}
-                onChange={(e) => updateItem(item.id, 'cast', e.target.value)}
-                className="col-span-2 h-8 text-xs"
-              />
-              <Input
-                placeholder="Location"
-                value={item.location}
-                onChange={(e) => updateItem(item.id, 'location', e.target.value)}
-                className="col-span-2 h-8 text-xs"
-              />
-              <div className="col-span-1 flex gap-1">
+                <Input
+                  type="text"
+                  placeholder="6:00 AM"
+                  value={item.time}
+                  onChange={(e) => updateItem(item.id, 'time', e.target.value)}
+                  className="h-8 text-xs"
+                />
+                <Input
+                  placeholder="Scene"
+                  value={item.sceneNo}
+                  onChange={(e) => updateItem(item.id, 'sceneNo', e.target.value)}
+                  className="h-8 text-xs"
+                />
+                <Input
+                  placeholder="Description"
+                  value={item.description}
+                  onChange={(e) => updateItem(item.id, 'description', e.target.value)}
+                  className="h-8 text-xs"
+                />
+                <Select value={item.dn} onValueChange={(v) => updateItem(item.id, 'dn', v)}>
+                  <SelectTrigger className="h-8 text-xs">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Day">Day</SelectItem>
+                    <SelectItem value="Night">Night</SelectItem>
+                    <SelectItem value="Morning">Morning</SelectItem>
+                    <SelectItem value="Evening">Evening</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Input
+                  placeholder="Cast"
+                  value={item.cast}
+                  onChange={(e) => updateItem(item.id, 'cast', e.target.value)}
+                  className="h-8 text-xs"
+                />
+                <Input
+                  placeholder="Location"
+                  value={item.location}
+                  onChange={(e) => updateItem(item.id, 'location', e.target.value)}
+                  className="h-8 text-xs"
+                />
                 <PagesInput
                   value={item.pages}
                   onChange={(v) => updateItem(item.id, 'pages', v)}
-                  className="h-8 text-xs w-16"
+                  className="h-8 text-xs"
                 />
                 <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => removeItem(item.id)}>
                   <X className="h-4 w-4" />
                 </Button>
+              </div>
+
+              {/* Mobile View */}
+              <div className="md:hidden border border-[hsl(var(--sheet-border))] rounded-lg p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex gap-1">
+                    <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => moveItem(item.id, 'up')}>
+                      <ChevronUp className="h-4 w-4" />
+                    </Button>
+                    <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => moveItem(item.id, 'down')}>
+                      <ChevronDown className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => removeItem(item.id)}>
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-xs text-[hsl(var(--label-text))]">Time</label>
+                    <Input
+                      type="text"
+                      placeholder="6:00 AM"
+                      value={item.time}
+                      onChange={(e) => updateItem(item.id, 'time', e.target.value)}
+                      className="h-8 text-xs"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-[hsl(var(--label-text))]">Scene No.</label>
+                    <Input
+                      placeholder="Scene"
+                      value={item.sceneNo}
+                      onChange={(e) => updateItem(item.id, 'sceneNo', e.target.value)}
+                      className="h-8 text-xs"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-xs text-[hsl(var(--label-text))]">Description</label>
+                  <Input
+                    placeholder="Description"
+                    value={item.description}
+                    onChange={(e) => updateItem(item.id, 'description', e.target.value)}
+                    className="h-8 text-xs"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-xs text-[hsl(var(--label-text))]">D/N</label>
+                    <Select value={item.dn} onValueChange={(v) => updateItem(item.id, 'dn', v)}>
+                      <SelectTrigger className="h-8 text-xs">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Day">Day</SelectItem>
+                        <SelectItem value="Night">Night</SelectItem>
+                        <SelectItem value="Morning">Morning</SelectItem>
+                        <SelectItem value="Evening">Evening</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <label className="text-xs text-[hsl(var(--label-text))]">Pages</label>
+                    <PagesInput
+                      value={item.pages}
+                      onChange={(v) => updateItem(item.id, 'pages', v)}
+                      className="h-8 text-xs"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-xs text-[hsl(var(--label-text))]">Cast</label>
+                  <Input
+                    placeholder="Cast"
+                    value={item.cast}
+                    onChange={(e) => updateItem(item.id, 'cast', e.target.value)}
+                    className="h-8 text-xs"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-[hsl(var(--label-text))]">Location</label>
+                  <Input
+                    placeholder="Location"
+                    value={item.location}
+                    onChange={(e) => updateItem(item.id, 'location', e.target.value)}
+                    className="h-8 text-xs"
+                  />
+                </div>
               </div>
             </div>
           ))}
