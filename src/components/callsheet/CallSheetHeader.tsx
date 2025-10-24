@@ -194,7 +194,7 @@ const CallSheetHeader = ({ data, updateData }: Props) => {
               <label className="text-xs text-[hsl(var(--label-text))]">Max Temp</label>
               <div className="flex gap-1">
                 <Input
-                  type="number"
+                  type="text"
                   placeholder="85"
                   value={data.maxTemp || ''}
                   onChange={(e) => updateData('maxTemp', e.target.value)}
@@ -213,7 +213,7 @@ const CallSheetHeader = ({ data, updateData }: Props) => {
             <div>
               <label className="text-xs text-[hsl(var(--label-text))]">Min Temp</label>
               <Input
-                type="number"
+                type="text"
                 placeholder="65"
                 value={data.minTemp || ''}
                 onChange={(e) => updateData('minTemp', e.target.value)}
@@ -222,20 +222,28 @@ const CallSheetHeader = ({ data, updateData }: Props) => {
             </div>
           </div>
 
-          <div>
-            <label className="text-xs text-[hsl(var(--label-text))]">Sunrise</label>
-            <TimeInput
-              value={data.sunrise || ''}
-              onChange={(v) => updateData('sunrise', v)}
-            />
-          </div>
-          
-          <div>
-            <label className="text-xs text-[hsl(var(--label-text))]">Sunset</label>
-            <TimeInput
-              value={data.sunset || ''}
-              onChange={(v) => updateData('sunset', v)}
-            />
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <label className="text-xs text-[hsl(var(--label-text))]">Sunrise</label>
+              <Input
+                type="text"
+                placeholder="6:30 AM"
+                value={data.sunrise || ''}
+                onChange={(e) => updateData('sunrise', e.target.value)}
+                className="text-xs h-7"
+              />
+            </div>
+            
+            <div>
+              <label className="text-xs text-[hsl(var(--label-text))]">Sunset</label>
+              <Input
+                type="text"
+                placeholder="7:45 PM"
+                value={data.sunset || ''}
+                onChange={(e) => updateData('sunset', e.target.value)}
+                className="text-xs h-7"
+              />
+            </div>
           </div>
         </div>
 
